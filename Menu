@@ -1,1 +1,114 @@
+// Create and style the menu
+const menuHTML = `
+    <div id="cookieClientMenu" style="display:none; position:fixed; top:50px; left:50px; background:#fff; padding:20px; border-radius:10px; box-shadow:0 0 15px rgba(0,0,0,0.2); width:300px; z-index:1000;">
+        <div id="menuHeader" style="font-size:18px; text-align:center; margin-bottom:10px;">Cookie Client - Mod Menu</div>
+        <div id="pageIndicator" style="font-size:14px; color:#777; text-align:center; margin-bottom:20px;">Page 1 of 3</div>
+
+        <!-- Page 1: Main -->
+        <div id="page1" class="menuPage">
+            <button onclick="goToPage(2)" style="width:100%; padding:10px; margin:10px 0; background-color:#4CAF50; color:white; border:none; border-radius:5px; cursor:pointer;">Go to Credits</button>
+            <button onclick="goToPage(3)" style="width:100%; padding:10px; margin:10px 0; background-color:#4CAF50; color:white; border:none; border-radius:5px; cursor:pointer;">Go to GitHub</button>
+            <button onclick="goToPage(4)" style="width:100%; padding:10px; margin:10px 0; background-color:#4CAF50; color:white; border:none; border-radius:5px; cursor:pointer;">Button 1</button>
+            <button onclick="goToPage(5)" style="width:100%; padding:10px; margin:10px 0; background-color:#4CAF50; color:white; border:none; border-radius:5px; cursor:pointer;">Button 2</button>
+            <button onclick="goToPage(6)" style="width:100%; padding:10px; margin:10px 0; background-color:#4CAF50; color:white; border:none; border-radius:5px; cursor:pointer;">Button 3</button>
+        </div>
+
+        <!-- Page 2: Credits -->
+        <div id="page2" class="menuPage" style="display:none;">
+            <h2>Credits</h2>
+            <p>Made by ZaxDax</p>
+            <a href="https://discord.gg/xqvj9xZyGr" target="_blank">
+                <button style="width:100%; padding:10px; margin:10px 0; background-color:#4CAF50; color:white; border:none; border-radius:5px; cursor:pointer;">Join the Discord</button>
+            </a>
+            <a href="https://github.com/ZaxDax/CookieClient-2.0" target="_blank">
+                <button style="width:100%; padding:10px; margin:10px 0; background-color:#4CAF50; color:white; border:none; border-radius:5px; cursor:pointer;">Visit GitHub</button>
+            </a>
+            <button onclick="goToPage(1)" style="width:100%; padding:10px; margin:10px 0; background-color:#4CAF50; color:white; border:none; border-radius:5px; cursor:pointer;">Back to Menu</button>
+        </div>
+
+        <!-- Page 3: GitHub -->
+        <div id="page3" class="menuPage" style="display:none;">
+            <h2>GitHub</h2>
+            <p>Check out the source code and updates on GitHub:</p>
+            <a href="https://github.com/ZaxDax/CookieClient-2.0" target="_blank">
+                <button style="width:100%; padding:10px; margin:10px 0; background-color:#4CAF50; color:white; border:none; border-radius:5px; cursor:pointer;">Visit GitHub</button>
+            </a>
+            <button onclick="goToPage(1)" style="width:100%; padding:10px; margin:10px 0; background-color:#4CAF50; color:white; border:none; border-radius:5px; cursor:pointer;">Back to Menu</button>
+        </div>
+
+        <div id="footer" style="text-align:center; margin-top:20px; font-size:12px;">
+            <span>Version Beta 2.0</span>
+        </div>
+
+        <div id="pageNav" style="text-align:center; margin-top:10px;">
+            <button onclick="goToPage(currentPage - 1)" style="width:100%; padding:10px; margin:10px 0; background-color:#4CAF50; color:white; border:none; border-radius:5px; cursor:pointer;" id="backButton">Back</button>
+            <button onclick="goToPage(currentPage + 1)" style="width:100%; padding:10px; margin:10px 0; background-color:#4CAF50; color:white; border:none; border-radius:5px; cursor:pointer;" id="nextButton">Next</button>
+        </div>
+    </div>
+`;
+
+// Inject the menu into the document body
+document.body.insertAdjacentHTML('beforeend', menuHTML);
+
+// Global variable for page management
+let currentPage = 1;
+const totalPages = 3;
+
+// Toggle the visibility of the menu
+function toggleMenu() {
+    const menu = document.getElementById("cookieClientMenu");
+    menu.style.display = (menu.style.display === "none" || menu.style.display === "") ? "block" : "none";
+}
+
+// Navigate between pages
+function goToPage(pageNumber) {
+    if (pageNumber < 1 || pageNumber > totalPages) return;
+
+    currentPage = pageNumber;
+    updateMenu();
+}
+
+// Update the menu based on the current page
+function updateMenu() {
+    // Hide all pages
+    const pages = document.querySelectorAll('.menuPage');
+    pages.forEach(page => page.style.display = 'none');
+
+    // Show the current page
+    document.getElementById('page' + currentPage).style.display = 'block';
+
+    // Update page indicator
+    document.getElementById('pageIndicator').textContent = `Page ${currentPage} of ${totalPages}`;
+
+    // Handle navigation buttons visibility
+    if (currentPage === 1) {
+        document.getElementById('backButton').style.display = 'none'; // Hide back on first page
+    } else {
+        document.getElementById('backButton').style.display = 'block'; // Show back on other pages
+    }
+
+    if (currentPage === totalPages) {
+        document.getElementById('nextButton').style.display = 'none'; // Hide next on last page
+    } else {
+        document.getElementById('nextButton').style.display = 'block'; // Show next on other pages
+    }
+}
+
+// Open the menu using a custom button
+const openButton = document.createElement('button');
+openButton.textContent = 'Open Cookie Client';
+openButton.onclick = toggleMenu;
+openButton.style.position = 'fixed';
+openButton.style.top = '20px';
+openButton.style.left = '20px';
+openButton.style.padding = '10px';
+openButton.style.backgroundColor = '#4CAF50';
+openButton.style.color = 'white';
+openButton.style.border = 'none';
+openButton.style.borderRadius = '5px';
+openButton.style.cursor = 'pointer';
+document.body.appendChild(openButton);
+
+// Initial menu state
+updateMenu();
 
